@@ -3,37 +3,47 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 
+<th:block layout:fragment="css">
+    <style>
+        .btn {
+            float: right;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+    </script>
+</th:block>
+
 <div layout:fragment="content">
     <h1>커뮤니티</h1>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th class="text-center" style="width: 50%" scope="col">제목</th>
+            <th class="text-center" style="width: 10%" scope="col">글쓴이</th>
+            <th class="text-center" style="width: 30%" scope="col">작성일</th>
+            <th class="text-center" style="width: 10%" scope="col">조회</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
+        <tr th:each="list : ${boardListDto}">
+            <td>
+                <a th:href="'/board/dtl/'+${list.id}" th:text="${list.title}">title></a>
+            </td>
+            <td th:text="${list.writer}">writer</td>
+            <td th:text="${list.regDate}">regDate</td>
+            <td th:text="${list.view}">view</td>
         </tr>
         </tbody>
     </table>
+    <button type="button" class="btn btn-primary" onClick="location.href='/board/new'">글쓰기</button>
 </div>
 
 </html>
