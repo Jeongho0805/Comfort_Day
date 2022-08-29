@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<th:block layout:fragment="css">
+    <style>
+        .btn {
+            float: right;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+    </script>
+</th:block>
+
+<div layout:fragment="content">
+    <h1>커뮤니티</h1>
+    <button type="button" class="btn btn-primary" onClick="location.href='/board/new'">글쓰기</button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class="text-center" style="width: 50%" scope="col">제목</th>
+            <th class="text-center" style="width: 10%" scope="col">글쓴이</th>
+            <th class="text-center" style="width: 30%" scope="col">작성일</th>
+            <th class="text-center" style="width: 10%" scope="col">조회</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="list : ${paging}">
+            <td>
+                <a th:href="'/board/dtl/'+${list.id}" th:text="${list.title}">title></a>
+            </td>
+            <td th:text="${list.writer}">writer</td>
+            <td th:text="${list.regDate}">regDate</td>
+            <td th:text="${list.view}">view</td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- 페이지 버튼 구현 -->
+    <div  th:with="start=${(paging.number/maxPage)*maxPage+1},
+                  end=${(paging.totalPages == 0) ? 1 : (start + maxPage - 1 < paging.totalPages ? start + maxPage - 1 : paging.totalPages)}">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${paging.number eq 0}?'disabled':''">
+                    <a class="page-link" th:href="@{list(page=${paging.number -1})}">Previous</a>
+                </li>
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${paging.number eq page -1}?'active':''">
+                    <a class="page-link" th:text="${page}" th:href="@{list(page=${page - 1})}">페이지 넘버</a>
+                </li>
+                <li class="page-item" th:classappend="${paging.number+1 ge paging.totalPages}?'disabled':''">
+                    <a class="page-link" th:href="@{list(page=${paging.number+1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+</html>
