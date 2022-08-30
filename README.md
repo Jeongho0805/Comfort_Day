@@ -11,7 +11,7 @@
 
 ## 문제 발생 및 해결
 * ~~글쓰기 버튼 누를 시 세션 자동 생성 문제~~  &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/1
-* 게시글 제목 글자색, 밑줄 디자인 변경 시 몇몇 게시글들은 적용이 안되는 문제 발생
+* 게시글 제목 글자색, 밑줄 디자인 변경 시 몇몇 게시글들은 적용이 안되는 문제 발생 https://github.com/Jeongho0805/portfolio/issues/2
 
 </br>
 
