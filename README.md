@@ -10,6 +10,6 @@
 </br>
 
 ## 생각해 볼 거리
-* ~~글쓰기 버튼 누를 시 세션 자동 생성 문제~~  &rightarrow; 해결
+* ~~글쓰기 버튼 누를 시 세션 자동 생성 문제~~  &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/1
 
 
