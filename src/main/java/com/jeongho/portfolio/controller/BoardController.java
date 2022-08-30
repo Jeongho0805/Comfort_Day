@@ -1,5 +1,6 @@
 package com.jeongho.portfolio.controller;
 
+import com.jeongho.portfolio.constant.SessionConst;
 import com.jeongho.portfolio.dto.BoardDtlDto;
 import com.jeongho.portfolio.dto.BoardFormDto;
 import com.jeongho.portfolio.dto.BoardListDto;
@@ -36,6 +37,7 @@ public class BoardController {
      */
     @GetMapping("/list")
     public String boardList(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+
         Page<BoardListDto> paging = boardService.findAllBoardList(page);
         model.addAttribute("paging", paging);
         model.addAttribute("maxPage",5);
@@ -62,9 +64,14 @@ public class BoardController {
 
         // 세션이 없을 경우 처리
         HttpSession session = request.getSession(false);
-        if(session == null) {
-            redirectAttributes.addAttribute("errorMessage", "로그인 후 글작성이 가능합니다.");
+        if(session == null ) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 후 글작성이 가능합니다.");
             return "redirect:/board/list";
+        } else {
+            if(session.getAttribute(SessionConst.LOGIN_MEMBER)==null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "로그인 후 글작성이 가능합니다.");
+                return "redirect:/board/list";
+            }
         }
 
 
