@@ -107,7 +107,55 @@ public class BoardController {
 
         BoardDtlDto boardDtlDto = boardService.findBoardDtlDto(boardId);
         model.addAttribute("boardDtlDto", boardDtlDto);
+        model.addAttribute("boardId", boardId);
 
         return "board/dtl";
     }
+
+    /**
+     * 게시글 삭제 로직
+     * 1. 로그인 세션 받아오기
+     * 2. 작성이와 일치하는지 검증
+     * 3. 삭제 기능 수행
+     */
+    @GetMapping("/delete/{boardId}")
+    public String boardDelete(HttpServletRequest request, @PathVariable("boardId") Long boardId, RedirectAttributes redirectAttributes) {
+
+        // 로그인 세션 정보 찾기
+        HttpSession session = request.getSession(false);
+        if(session == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 이후 이용해주세요.");
+            return "redirect:/board/dtl/"+boardId;
+        }
+
+        //세션에 LoginMember 관련 Attribute가 있는지 체크
+        Object attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if(attribute == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 이후 이용해주세요.");
+            return "redirect:/board/dtl/"+boardId;
+        }
+
+        Long loginMemberId = (Long)attribute;
+        if(!boardService.deleteAuthorizationCheck(boardId, loginMemberId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "해당 게시물의 삭제 권한이 없습니다.");
+            return "redirect:/board/dtl/"+boardId;
+        }
+
+        // 인가가 확인되면 해당 게시물 delete 작업 수행
+        boardService.deleteBoard(boardId);
+
+        // 삭제 기능 수행 후 게시판 화면으로 이동
+        return "redirect:/board/list";
+
+
+
+
+
+
+
+
+
+    }
+
+
 }

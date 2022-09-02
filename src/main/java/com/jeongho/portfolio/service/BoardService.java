@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,8 @@ public class BoardService {
      * page size를 10으로 하면 footer와 글쓰기 버튼이 겹치는 문제 발생
      */
     public Page<BoardListDto> findAllBoardList(int page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        // 최근 작성 일 기준으로 정렬
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("regTime").descending());
         Page<Board> boardPage = boardRepository.findAll(pageable);
         Page<BoardListDto> boardListDtoPage = boardPage.map(board -> new BoardListDto(
                 board.getId(),
@@ -113,5 +115,30 @@ public class BoardService {
 
     public void updateViewCount(Long boardId) {
         boardRepository.updateViewCount(boardId);
+    }
+
+
+    /**
+     * 삭제 인가 체크
+     * 1. boardId에 저장된 member 정보 확인
+     * 2. 받아온 loginMemberId와 member정보가 같은지 확인
+     * 3. 다르면 false 반환
+     * 4. if문에 해당하지 않으면 true 반환
+     */
+    public boolean deleteAuthorizationCheck(Long boardId, Long loginMemberId) {
+        Board board = boardRepository.findById(boardId).get();
+        Long findMemberId = board.getMember().getId();
+        if(loginMemberId != findMemberId) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 삭제 기능 구현
+     *
+     */
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
     }
 }

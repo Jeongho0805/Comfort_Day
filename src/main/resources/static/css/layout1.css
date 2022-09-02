@@ -7,7 +7,8 @@ body {
     min-height: 100%;
 }
 .footer {
-    position: absolute;
+    position: relative;
+    transform: translateY(-100%);
     left: 0;
     right: 0;
     bottom: 0;
@@ -21,3 +22,4 @@ body {
     margin-left: 200px;
     margin-right: 200px;
 }
+
