@@ -125,7 +125,7 @@ public class BoardService {
      * 3. 다르면 false 반환
      * 4. if문에 해당하지 않으면 true 반환
      */
-    public boolean deleteAuthorizationCheck(Long boardId, Long loginMemberId) {
+    public boolean AuthorizationCheck(Long boardId, Long loginMemberId) {
         Board board = boardRepository.findById(boardId).get();
         Long findMemberId = board.getMember().getId();
         if(loginMemberId != findMemberId) {
@@ -140,5 +140,21 @@ public class BoardService {
      */
     public void deleteBoard(Long boardId) {
         boardRepository.deleteById(boardId);
+    }
+
+    /**
+     * update기능을 위한 boardFormDto에 데이터 담는 작업
+     */
+    public BoardFormDto findBoardFormDto(Long boardId) {
+        BoardFormDto boardFormDto = new BoardFormDto();
+        Board board = boardRepository.findById(boardId).get();
+        boardFormDto.setTitle(board.getTitle());
+        boardFormDto.setContent(board.getContent());
+        return boardFormDto;
+    }
+
+    public void updateBoard(Long boardId, BoardFormDto boardFormDto) {
+        Board board = boardRepository.findById(boardId).get();
+        board.updateBoard(boardFormDto.getTitle(), boardFormDto.getContent());
     }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<div layout:fragment="content">
+  <form th:action="@{/board/update/{boardId}(boardId=${boardId})}" role="form" method="post"  th:object="${boardFormDto}">
+    <div class="form-group">
+      <label th:for="title">제목</label>
+      <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력해주세요.">
+      <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError">Incorrect data</p>
+    </div>
+    <div class="form-group">
+      <label th:for="content">본문</label>
+      <textarea th:field="*{content}" class="form-control" rows="5" placeholder="본문을 입력해주세요."></textarea>
+      <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
+    </div>
+    <div style="text-align: center">
+      <button type="submit" class="btn btn-primary" style="">수정 완료</button>
+    </div>
+  </form>
+</div>
+
+</html>

@@ -21,7 +21,7 @@
     <!-- Page content-->
     <div class="container mt-5" th:object="${boardDtlDto}">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-primary me-md-2" type="button" onclick="location.href='/'">수정</button>
+            <button class="btn btn-primary" type="button" th:onclick="|location.href='/board/update/'+${boardId}+''|">수정</button>
             <!-- 링크 부분에 @{}와 ${} el부분 같이 쓰면 이동이 안되는 현상 발생 -> onclick="location.href=&#39;/delete/&#39;+${boardId}+&#39;&#39;-->
             <button class="btn btn-primary" type="button" th:onclick="|location.href='/board/delete/'+${boardId}+''|">삭제</button>
         </div>

@@ -136,7 +136,7 @@ public class BoardController {
         }
 
         Long loginMemberId = (Long)attribute;
-        if(!boardService.deleteAuthorizationCheck(boardId, loginMemberId)) {
+        if(!boardService.AuthorizationCheck(boardId, loginMemberId)) {
             redirectAttributes.addFlashAttribute("errorMessage", "해당 게시물의 삭제 권한이 없습니다.");
             return "redirect:/board/dtl/"+boardId;
         }
@@ -147,14 +147,58 @@ public class BoardController {
         // 삭제 기능 수행 후 게시판 화면으로 이동
         return "redirect:/board/list";
 
+    }
 
+    /**
+     * 게시글 수정 로직
+     * 1. 로그인 세션과 글 작성자 일치하는지 확인
+     * 2. 일치 하지 않으면 게시글 상세화면으로 redirect // 일치하면 model에 게시글 번호 정보 담아서! update화면 반환
+     */
+    @GetMapping("/update/{boardId}")
+    public String boardUpdateForm(HttpServletRequest request, @PathVariable("boardId") Long boardId, Model model, RedirectAttributes redirectAttributes) {
+        log.info("update controller확인");
 
+        // 로그인 세션 정보 찾기
+        HttpSession session = request.getSession(false);
+        if(session == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 이후 이용해주세요.");
+            return "redirect:/board/dtl/"+boardId;
+        }
 
+        //세션이 있으면 LoginMember 관련 세션이 있는지 체크
+        Object attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if(attribute == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 이후 이용해주세요.");
+            return "redirect:/board/dtl/"+boardId;
+        }
 
+        // LoginMember 관련 세션이 확인 되면 작성자와 일치하는지 인가 체크 작업 수행
+        Long loginMemberId = (Long)attribute;
+        if(!boardService.AuthorizationCheck(boardId, loginMemberId)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "해당 게시물의 수정 권한이 없습니다.");
+            return "redirect:/board/dtl/"+boardId;
+        }
 
+        // 모든 세션과 인가가 확인되면 boardFormDto정보와 boardId 정보를 model에 담아 update.html에 반환
+        BoardFormDto boardFormDto = boardService.findBoardFormDto(boardId);
+        model.addAttribute("boardFormDto", boardFormDto);
+        model.addAttribute("boardId", boardId);
+        return "board/update";
+    }
 
+    @PostMapping("/update/{boardId}")
+    public String boardUpdate(@Valid BoardFormDto boardFormDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, @PathVariable("boardId")Long boardId) {
 
+        // 수정한 내용에 valid 오류가 있으면 다시 반환
+        if(bindingResult.hasErrors()) {
+            return "board/update";
+        }
 
+        // 수정한 내용에 오류가 없으면 수정 작업 수행
+        boardService.updateBoard(boardId, boardFormDto);
+        redirectAttributes.addFlashAttribute("errorMessage", "수정이 완료되었습니다.");
+
+        return "redirect:/board/dtl/"+boardId;
     }
 
 
