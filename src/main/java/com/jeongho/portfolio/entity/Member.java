@@ -36,6 +36,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Board> boardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Comment> commentList = new ArrayList<>();
+
     // DTO에서 entity로 변환 메서드
     public static Member createMember(MemberFormDto memberFormDto) {
         Member member = new Member();
@@ -46,7 +49,6 @@ public class Member {
         member.setRole(Role.USER);
 
         return member;
-
 
     }
 

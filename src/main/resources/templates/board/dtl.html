@@ -14,6 +14,33 @@
                 alert(errorMessage);
             }
         });
+
+        const target = document.getElementById("commentSave")
+        target.addEventListener('click', function(){
+            let data = {
+                content: document.getElementById("commentContent").value,
+                boardId : [[${boardId}]]
+            };
+
+            console.log(data.content);
+            console.log(data.boardId);
+
+            $.ajax({
+                type:"POST",
+                url:"/comment/new",
+                data:JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType:"json"
+            }).done(function(response){
+                document.getElementById("comment--box").innerHTML = "";
+                $('#comment--box').load(location.href+' #comment--box');
+            }).fail(function (request, error){
+                alert(JSON.stringify(error));
+                alert(request.responseText);
+            });
+        })
+
+
     </script>
 </th:block>
 
@@ -40,6 +67,31 @@
                     <p class="fs-5 mb-4" th:text="*{content}">본문 내용</p>
                 </section>
             </article>
+            <section class="mb-5">
+                <!-- Comment form-->
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <textarea id=commentContent class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                    </div>
+                    <div class="card-footer d-grid gap-2 col-6 mx-auto">
+                        <button type="button" id="commentSave" class="btn btn-primary">등록</button>
+                    </div>
+                </div>
+                <br />
+                <div class="card bg-light">
+                    <div class="card-header">댓글리스트</div>
+                    <ul id="comment--box" class="list-group" th:each="comment : ${commentDtoList}">
+                        <li id="comment--1" class="list-group-item d-flex justify-content-between">
+                            <div th:text="${comment.content}">댓글 내용</div>
+                            <div class="d-flex">
+                                <div th:text="|작성자 : ${comment.username}|">작성자 : 박정호</div>
+                                <button>수정</button>
+                                <button>삭제</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
         </div>
     </div>
 </div>

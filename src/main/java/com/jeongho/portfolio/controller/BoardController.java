@@ -4,6 +4,7 @@ import com.jeongho.portfolio.constant.SessionConst;
 import com.jeongho.portfolio.dto.BoardDtlDto;
 import com.jeongho.portfolio.dto.BoardFormDto;
 import com.jeongho.portfolio.dto.BoardListDto;
+import com.jeongho.portfolio.dto.CommentDto;
 import com.jeongho.portfolio.entity.Member;
 import com.jeongho.portfolio.service.BoardService;
 import com.jeongho.portfolio.service.MemberService;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -106,8 +108,14 @@ public class BoardController {
         }
 
         BoardDtlDto boardDtlDto = boardService.findBoardDtlDto(boardId);
+        // 댓글 목록 가져오기
+        List<CommentDto> commentDtoList = boardService.viewAllComment(boardId);
+
         model.addAttribute("boardDtlDto", boardDtlDto);
         model.addAttribute("boardId", boardId);
+        model.addAttribute("commentDtoList", commentDtoList);
+
+
 
         return "board/dtl";
     }

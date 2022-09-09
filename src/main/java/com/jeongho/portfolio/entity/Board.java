@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "board")
@@ -27,6 +29,9 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "board")
+    private List<Comment> commentList = new ArrayList<>();
+
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
@@ -41,6 +46,9 @@ public class Board extends BaseTimeEntity {
 
     // 글쓴이와 연관관계 편의 메서드
     public void setMember(Member member) {
+        if(this.member != null) {
+            this.member.getBoardList().remove(this);
+        }
         this.member = member;
         member.getBoardList().add(this);
     }
