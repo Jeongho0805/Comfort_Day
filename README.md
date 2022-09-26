@@ -14,7 +14,7 @@
 ## 문제 발생 및 해결
 * ~~글쓰기 버튼 누를 시 세션 자동 생성 문제~~  &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/1
 * ~~게시글 제목 글자색, 밑줄 디자인 변경 시 몇몇 게시글들은 적용이 안되는 문제 발생~~ &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/2
-* ~~ajax 비동기 전달 방식 사용시 댓글이 중복되어 출력되는 문제, 첫 댓글 입력시 새로고침 해야 댓글이 보이는 문제~~ &rightarrow; 해결 
+* ~~ajax 비동기 전달 방식 사용시 댓글이 중복되어 출력되는 문제, 첫 댓글 입력시 새로고침 해야 댓글이 보이는 문제~~ &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/3
 
 </br>
 
