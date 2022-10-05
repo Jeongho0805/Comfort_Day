@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,10 +39,11 @@ public class MemberService {
      */
     public Member findMemberBySession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        if(session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+            return null;
+        }
         Long memberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
-
-        Optional<Member> byId = memberRepository.findById(memberId);
-        Member findMember = byId.get();
+        Member findMember = memberRepository.findById(memberId).get();
 
         return findMember;
     }

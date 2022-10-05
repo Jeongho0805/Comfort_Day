@@ -111,11 +111,18 @@ public class BoardService {
     }
 
     public boolean checkViewCount(Cookie[] cookies, Long boardId) {
+
+        if(cookies == null) {
+            return false;
+        }
+
         for (Cookie cookie : cookies) {
+
             if(cookie.getName().equals("viewCheck"+boardId)) {
                 return true;
             }
         }
+
         return false;
     }
 

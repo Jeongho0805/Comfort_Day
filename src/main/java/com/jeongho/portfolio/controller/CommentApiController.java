@@ -24,20 +24,21 @@ public class CommentApiController {
     @PostMapping(value="/comment/new", produces = "application/json")
     public ResponseDto<Integer> createComment(@RequestBody CommentDto commentDto, HttpServletRequest request) {
 
-        HttpSession session = request.getSession(false);
-        if(session == null) {
-            throw new IllegalStateException("로그인 후 이용해주세요");
-        }
-        Object attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if(attribute == null) {
-            throw new IllegalStateException("로그인 후 이욯애주세요.");
-        }
-        Long loginMemberId = (Long)attribute;
 
+
+        Object attribute = null;
+        try {
+            HttpSession session = request.getSession(false);
+            attribute = session.getAttribute(SessionConst.LOGIN_MEMBER);
+        } catch (NullPointerException e) {
+            throw e;
+        }
+
+        Long loginMemberId = (Long) attribute;
         String content = commentDto.getContent();
         Long boardId = commentDto.getBoardId();
 
-        log.info("데이터 전달 체크, content값={}, boardId값 ={}, loginMemberId값 ={}", content, boardId,loginMemberId);
+        log.info("데이터 전달 체크, content값={}, boardId값 ={}, loginMemberId값 ={}", content, boardId);
 
         boardService.createComment(commentDto, loginMemberId);
 

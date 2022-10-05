@@ -17,12 +17,16 @@
             if(errorMessage != null){
                 alert(errorMessage);
             }
+            var loginRequiredMessage = [[${loginRequiredMsg}]];
+            if(loginRequiredMessage != null) {
+                alert(loginRequiredMessage);
+            }
         });
     </script>
 </th:block>
 
 <div layout:fragment="content">
-    <form action="/member/login" role="form" method="post" th:object="${loginFormDto}">
+    <form action="/member/login" role="form" method="post" th:action th:object="${loginFormDto}">
         <div class="form-group">
             <label th:for="name">이메일 id</label>
             <input type="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요">

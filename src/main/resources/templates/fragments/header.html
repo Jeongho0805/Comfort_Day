@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <div th:fragment="header">
     <nav class="navbar navbar-expand-sm navbar navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -14,6 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
+                <li th:if="${session.loginMember} != null" class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:text="|${memberName}님 환영합니다!|" href="">회원이름</a>
+                </li>
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo03">
@@ -21,11 +23,14 @@
                 <li class="nav-item">
                     <a class="nav-link" id="board" href="/board/list">커뮤니티</a>
                 </li>
-                <li class="nav-item">
+                <li th:if="${session.loginMember} == null" class="nav-item">
                     <a class="nav-link" id="new" href="/member/new">회원 가입</a>
                 </li>
-                <li class="nav-item">
+                <li th:if="${session.loginMember} == null" class="nav-item">
                     <a class="nav-link" id="login" href="/member/login">로그인</a>
+                </li>
+                <li th:if="${session.loginMember} != null" class="nav-item">
+                    <a class="nav-link" id="logout" href="/member/logout">로그아웃</a>
                 </li>
             </ul>
         </div>

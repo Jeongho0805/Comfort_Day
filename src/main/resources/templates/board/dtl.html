@@ -13,34 +13,36 @@
             if(errorMessage != null){
                 alert(errorMessage);
             }
+            const target = document.getElementById("commentSave")
+            target.addEventListener('click', function(){
+                let data = {
+                    content: document.getElementById("commentContent").value,
+                    boardId : [[${boardId}]]
+                };
+
+                console.log(data.content);
+                console.log(data.boardId);
+
+                $.ajax({
+                    type : "POST",
+                    url : "/comment/new",
+                    cache : false,
+                    data : JSON.stringify(data),
+                    contentType : "application/json; charset=utf-8",
+                    dataType : "json",
+                    success : function() {
+                        $('#card-comment').html('');
+                        $('#card-comment').load(location.href+' #card-comment');
+
+                    },
+                    error : function () {
+                        alert("로그인 후 이용해주세요.")
+                    }
+
+                });
+            })
+
         });
-
-        const target = document.getElementById("commentSave")
-        target.addEventListener('click', function(){
-            let data = {
-                content: document.getElementById("commentContent").value,
-                boardId : [[${boardId}]]
-            };
-
-            console.log(data.content);
-            console.log(data.boardId);
-
-            $.ajax({
-                type:"POST",
-                url:"/comment/new",
-                data:JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                dataType:"json"
-            }).done(function(response){
-                document.getElementById("comment--box").innerHTML = "";
-                $('#comment--box').load(location.href+' #comment--box');
-            }).fail(function (request, error){
-                alert(JSON.stringify(error));
-                alert(request.responseText);
-            });
-        })
-
-
     </script>
 </th:block>
 
@@ -78,7 +80,7 @@
                     </div>
                 </div>
                 <br />
-                <div class="card bg-light">
+                <div id="card-comment" class="card bg-light">
                     <div class="card-header">댓글리스트</div>
                     <ul id="comment--box" class="list-group" th:each="comment : ${commentDtoList}">
                         <li id="comment--1" class="list-group-item d-flex justify-content-between">
