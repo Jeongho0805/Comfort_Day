@@ -1,10 +1,7 @@
 package com.jeongho.portfolio.controller;
 
 import com.jeongho.portfolio.constant.SessionConst;
-import com.jeongho.portfolio.dto.BoardDtlDto;
-import com.jeongho.portfolio.dto.BoardFormDto;
-import com.jeongho.portfolio.dto.BoardListDto;
-import com.jeongho.portfolio.dto.CommentDto;
+import com.jeongho.portfolio.dto.*;
 import com.jeongho.portfolio.entity.Member;
 import com.jeongho.portfolio.service.BoardService;
 import com.jeongho.portfolio.service.MemberService;
@@ -34,10 +31,13 @@ public class BoardController {
 
     // 게시글 출력
     @GetMapping("/list")
-    public String boardList(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-        // 전체 게시글 페이징 처리 후 반환
-        Page<BoardListDto> paging = boardService.findAllBoardList(page);
+    public String boardList(Model model, BoardSearchDto boardSearchDto, @RequestParam(value = "page", defaultValue = "0") int page) {
+        // boardSerachDto 로깅
+        log.info("boardSerachDto = {}, query={}, type={}", boardSearchDto, boardSearchDto.getSearchQuery(), boardSearchDto.getSearchType());
+        // 전체 게시글 페이징 처리 후 반환 & 검색 기능 구현
+        Page<BoardListDto> paging = boardService.findAllBoardList(page, boardSearchDto);
         model.addAttribute("paging", paging);
+        model.addAttribute("boardSearchDto", boardSearchDto);
         model.addAttribute("maxPage",5);
         return "board/list";
     }

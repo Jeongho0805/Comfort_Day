@@ -10,6 +10,16 @@
         }
     </style>
 </th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${duplicateMemberError}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+    </script>
+</th:block>
 
 <div layout:fragment="content">
     <form action="/member/new" role="form" method="post"  th:object="${memberFormDto}">

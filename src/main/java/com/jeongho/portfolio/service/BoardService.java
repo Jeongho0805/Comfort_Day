@@ -1,9 +1,6 @@
 package com.jeongho.portfolio.service;
 
-import com.jeongho.portfolio.dto.BoardDtlDto;
-import com.jeongho.portfolio.dto.BoardFormDto;
-import com.jeongho.portfolio.dto.BoardListDto;
-import com.jeongho.portfolio.dto.CommentDto;
+import com.jeongho.portfolio.dto.*;
 import com.jeongho.portfolio.entity.Board;
 import com.jeongho.portfolio.entity.Comment;
 import com.jeongho.portfolio.entity.Member;
@@ -45,10 +42,12 @@ public class BoardService {
      * pageable 적용 게시판 리스트 찾기 로직
      * page size를 10으로 하면 footer와 글쓰기 버튼이 겹치는 문제 발생
      */
-    public Page<BoardListDto> findAllBoardList(int page) {
+    public Page<BoardListDto> findAllBoardList(int page, BoardSearchDto boardSearchDto) {
         // 최근 작성 일 기준으로 정렬
         Pageable pageable = PageRequest.of(page, 5, Sort.by("regTime").descending());
-        Page<Board> boardPage = boardRepository.findAll(pageable);
+        // searchQuery -> null값일 경우와, 값이 있을 경우
+        Page<Board> boardPage =  boardRepository.findBySearchQueryAndType(pageable, boardSearchDto);
+
         Page<BoardListDto> boardListDtoPage = boardPage.map(board -> new BoardListDto(
                 board.getId(),
                 board.getTitle(),

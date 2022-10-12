@@ -1,6 +1,7 @@
 package com.jeongho.portfolio.service;
 
 import com.jeongho.portfolio.constant.SessionConst;
+import com.jeongho.portfolio.dto.MemberFormDto;
 import com.jeongho.portfolio.entity.Member;
 import com.jeongho.portfolio.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,13 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member saveMember(Member member){
-        validateDuplicateMember(member);
+    public Member saveMember(MemberFormDto memberFormDto){
+        try {
+            validateDuplicateMember(memberFormDto.getEmail());
+        } catch (IllegalStateException e) {
+            return null;
+        }
+        Member member = Member.createMember(memberFormDto);
         return memberRepository.save(member);
     }
 
@@ -50,8 +56,8 @@ public class MemberService {
 
 
 
-    private void validateDuplicateMember(Member member) {
-        Member findMember = memberRepository.findByEmail(member.getEmail());
+    private void validateDuplicateMember(String email) {
+        Member findMember = memberRepository.findByEmail(email);
         if(findMember!=null){
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }

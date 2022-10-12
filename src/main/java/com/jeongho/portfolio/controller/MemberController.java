@@ -35,13 +35,15 @@ public class MemberController {
         return "member/memberForm";
     }
     @PostMapping("/new")
-    public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult) {
+    public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "member/memberForm";
         }
-        Member member = Member.createMember(memberFormDto);
-        memberService.saveMember(member);
-
+        Member member = memberService.saveMember(memberFormDto);
+        if(member == null) {
+            model.addAttribute("duplicateMemberError", "이미 해당 아이디로 가입된 회원이 있습니다.");
+            return "member/memberForm";
+        }
         return "redirect:/";
     }
 
