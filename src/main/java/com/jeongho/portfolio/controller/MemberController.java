@@ -80,6 +80,7 @@ public class MemberController {
         // 로그인 성공 처리 세션에 정보 저장
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember.getId());
+        session.setAttribute(SessionConst.LOGIN_MEMBER_NAME, loginMember.getName());
         return "redirect:" + redirectURL;
     }
     @GetMapping("/logout")

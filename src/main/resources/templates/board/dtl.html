@@ -4,7 +4,17 @@
       layout:decorate="~{layouts/layout1}">
 
 <th:block layout:fragment="css">
-    <link th:href="@{/css/boardDtl.css}" rel="stylesheet" />
+<!--    <link th:href="@{/css/boardDtl.css}" rel="stylesheet" />-->
+    <style>
+        #commentRegisterButton {
+            width: 4rem;
+            float: right;
+        }
+        #commentUpdateButton {
+            padding-left: 1rem;
+            padding-right: 0.5rem;
+        }
+    </style>
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
@@ -13,7 +23,7 @@
             if(errorMessage != null){
                 alert(errorMessage);
             }
-            const target = document.getElementById("commentSave")
+            const target = document.getElementById("commentRegisterButton")
             target.addEventListener('click', function(){
                 let data = {
                     content: document.getElementById("commentContent").value,
@@ -69,14 +79,14 @@
                     <p class="fs-5 mb-4" th:text="*{content}">본문 내용</p>
                 </section>
             </article>
-            <section class="mb-5">
+            <section class="mb-5", style="padding-top: 10rem">
                 <!-- Comment form-->
                 <div class="card bg-light">
                     <div class="card-body">
                         <textarea id=commentContent class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                     </div>
-                    <div class="card-footer d-grid gap-2 col-6 mx-auto">
-                        <button type="button" id="commentSave" class="btn btn-primary">등록</button>
+                    <div class="card-footer">
+                        <button id="commentRegisterButton" class="btn btn-primary" type="button" th:onclick="">등록</button>
                     </div>
                 </div>
                 <br />
@@ -86,9 +96,12 @@
                         <li id="comment--1" class="list-group-item d-flex justify-content-between">
                             <div th:text="${comment.content}">댓글 내용</div>
                             <div class="d-flex">
-                                <div th:text="|작성자 : ${comment.username}|">작성자 | 박정호</div>
-                                <a href="">수정</a>
-                                <a href="">삭제</a>
+                                <div class="collapse multi-collapse" th:text="|작성자 - ${comment.username}|">작성자 정보</div>
+                                <!-- 작성자와 회원정보가 일치하는 경우에만 수정, 삭제 버튼 보여준다 -->
+                                <div th:if="${comment.username == memberName}">
+                                    <a id="commentUpdateButton" href="" >수정</a>
+                                    <a href="">삭제</a>
+                                </div>
                             </div>
                         </li>
                     </ul>

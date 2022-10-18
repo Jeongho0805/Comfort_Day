@@ -8,6 +8,16 @@
         .fieldError {
             color: red;
         }
+        .form-group {
+            margin: 0 auto;
+            width: 30rem;
+        }
+        #loginButton {
+            margin-top: 1rem;
+        }
+        #loginForm {
+            margin-top: 3rem;
+        }
     </style>
 </th:block>
 <th:block layout:fragment="script">
@@ -26,7 +36,7 @@
 </th:block>
 
 <div layout:fragment="content">
-    <form action="/member/login" role="form" method="post" th:action th:object="${loginFormDto}">
+    <form  id="loginForm" action="/member/login" role="form" method="post" th:action th:object="${loginFormDto}">
         <div class="form-group">
             <label th:for="name">이메일 id</label>
             <input type="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요">
@@ -37,7 +47,7 @@
             <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력해주세요">
             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
         </div>
-        <div style="text-align: center">
+        <div id="loginButton" style="text-align: center">
             <button class="btn btn-primary">로그인</button>
             <button type="button" class="btn btn-primary" onClick="location.href='/member/new'">회원가입</button>
         </div>
