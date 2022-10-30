@@ -61,7 +61,7 @@
         </div>
     </div>
     <button type="button" class="btn btn-primary" onClick="location.href='/board/new'">글쓰기</button>
-    <a href="">최신순</a>
+    <a th:href="@{list(searchQuery=${boardSearchDto.searchQuery}, searchType=${boardSearchDto.searchType}, searchSortType=${boardSearchDto.searchSortType.최신순})}">최신순</a>
     <a href="">조회순</a>
     <a href="">댓글순</a>
     <table class="table table-hover">
@@ -93,7 +93,7 @@
                     <a class="page-link" th:href="@{list(searchQuery=${boardSearchDto.searchQuery}, searchType=${boardSearchDto.searchType}, page=${paging.number -1})}">Previous</a>
                 </li>
                 <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${paging.number eq page -1}?'active':''">
-                    <a class="page-link" th:text="${page}" th:href="@{list(page=${page - 1})}">페이지 넘버</a>
+                    <a class="page-link" th:text="${page}" th:href="@{list(searchQuery=${boardSearchDto.searchQuery}, searchType=${boardSearchDto.searchType}, page=${page - 1})}">페이지 넘버</a>
                 </li>
                 <li class="page-item" th:classappend="${paging.number+1 ge paging.totalPages}?'disabled':''">
                     <a class="page-link" th:href="@{list(searchQuery=${boardSearchDto.searchQuery}, searchType=${boardSearchDto.searchType}, page=${paging.number +1})}">Next</a>
