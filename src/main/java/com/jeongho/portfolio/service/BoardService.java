@@ -189,12 +189,45 @@ public class BoardService {
         Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException());
         List<CommentDto> commentDtoList = new ArrayList<>();
         for (Comment comment : findBoard.getCommentList()) {
-            CommentDto commentDto = new CommentDto();
-            commentDto.setUsername(comment.getMember().getName());
-            commentDto.setContent(comment.getContent());
+            Long commentId = comment.getId();
+            String content = comment.getContent();
+            String username = comment.getMember().getName();
+            CommentDto commentDto = new CommentDto(commentId, content, username);
             commentDtoList.add(commentDto);
         }
 
         return commentDtoList;
     }
+
+    public void updateComment(CommentDto commentDto) {
+        Comment comment = findCommentByDto(commentDto);
+
+        if (!isEqualWriter(comment, commentDto)) {
+            throw new IllegalStateException("작성자와 수정자가 일치하지 않습니다.");
+        }
+        comment.updateComment(commentDto.getContent());
+    }
+
+    public void deleteComment(CommentDto commentDto) {
+        Comment comment = findCommentByDto(commentDto);
+
+        if (!isEqualWriter(comment, commentDto)) {
+            throw new IllegalStateException("작성자와 삭제를 요청하는 회원이 일치하지 않습니다.");
+        }
+        commentRepository.delete(comment);
+    }
+
+    private boolean isEqualWriter(Comment comment, CommentDto commentDto) {
+        String originWriter = comment.getMember().getName();
+        String writer = commentDto.getUsername();
+        return originWriter.equals(writer);
+    }
+
+    private Comment findCommentByDto(CommentDto commentDto) {
+        Long commentId = commentDto.getCommentId();
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalStateException("해당 댓글을 찾을 수 없습니다"));
+        return comment;
+    }
+
+
 }

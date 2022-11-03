@@ -33,7 +33,7 @@ public class BoardController {
     @GetMapping("/list")
     public String boardList(Model model, BoardSearchDto boardSearchDto, @RequestParam(value = "page", defaultValue = "0") int page) {
         // boardSerachDto 로깅
-        log.info("boardSerachDto = {}, query={}, type={}", boardSearchDto, boardSearchDto.getSearchQuery(), boardSearchDto.getSearchType());
+        log.info("searchSortType = {}", boardSearchDto.getSearchSortType());
         // 전체 게시글 페이징 처리 후 반환 & 검색 기능 구현
         Page<BoardListDto> paging = boardService.findAllBoardList(page, boardSearchDto);
         model.addAttribute("paging", paging);

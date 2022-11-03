@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        #donation-Header {
+            background-color: #f8f9fa;
+            /*border: black;*/
+            /*border-style: solid;*/
+            line-height: 5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            width: 100%;
+            height: 5rem;
+        }
+        #donation-type {
+            display: flex;
+            margin: auto;
+            text-align: center;
+            width: 50%;
+            height: 3rem;
+            line-height: 3rem;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
+        .item {
+            flex-grow: 1;
+            font-size: 2rem;
+            font-family: 'Do Hyeon', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            color: #4f5050;
+        }
+        .item:hover {
+            text-decoration: none;
+            color: black;
+        }
+
+        .status {
+            font-size: 2rem;
+            font-family: 'Do Hyeon', sans-serif;
+            text-align: center;
+            text-decoration: none;
+            color: #4f5050;
+
+        }
+        .status:hover {
+            text-decoration: none;
+            color: black;
+        }
+
+        #donation-ongoing{
+            margin-right: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <!-- 기부 페이지 헤더       -->
+        <div id="donation-Header">
+                <a class="status" id="donation-ongoing" href="">모금중</a>
+                <a class="status" href="">모금완료</a>
+        </div>
+        <!-- 모금 종류  -->
+        <div id="donation-type">
+            <a class="item" href="">전체</a>
+            <a class="item" href="">어린이</a>
+            <a class="item" href="">청년</a>
+            <a class="item" href="">장애인</a>
+            <a class="item" href="">어르신</a>
+        </div>
+    </div>
+</body>
+</html>

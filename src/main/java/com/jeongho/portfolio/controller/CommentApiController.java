@@ -44,4 +44,24 @@ public class CommentApiController {
 
         return new ResponseDto<Integer>(HttpStatus.OK, 1);
     }
+
+    @PostMapping(value="/comment/update", produces = "application/json")
+    public ResponseDto<Integer> updateComment(@RequestBody CommentDto commentDto, HttpServletRequest request) {
+
+        // 정보입력 로깅
+        String content = commentDto.getContent();
+        log.info("content = [{}]", content);
+        boardService.updateComment(commentDto);
+
+
+        return new ResponseDto<Integer>(HttpStatus.OK, 1);
+    }
+
+    @PostMapping(value = "/comment/delete", produces = "applicatin/json")
+    public ResponseDto<Integer> deleteComment(@RequestBody CommentDto commentDto, HttpServletRequest request) {
+
+        boardService.deleteComment(commentDto);
+
+        return new ResponseDto<Integer>(HttpStatus.OK, 1);
+    }
 }

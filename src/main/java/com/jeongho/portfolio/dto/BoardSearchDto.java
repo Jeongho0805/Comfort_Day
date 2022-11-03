@@ -8,4 +8,5 @@ import lombok.Setter;
 public class BoardSearchDto {
     private String searchType;
     private String searchQuery;
+    private String searchSortType;
 }
