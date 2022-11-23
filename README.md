@@ -2,22 +2,23 @@
 
 
 ## 구현 해야될 리스트
-- [ ] 댓글 CRUD
+- [x] 댓글 CRUD
 - [x] 게시글 조회수
 - [x] 페이징 기능 구현 
 - [x] 게시글 CURD 기능 구현
 - [x] 게시글 검색 기능 구현
 - [ ] 최신순, 조회수 순으로 정렬 기능
 - [ ] 게시글 보이는 갯수 조정 기능
-- [ ] HTTP API 제공    
-</br>
+- [x] REST API 제공    
+
+
 
 ## 문제 발생 및 해결
 * ~~글쓰기 버튼 누를 시 세션 자동 생성 문제~~  &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/1
 * ~~게시글 제목 글자색, 밑줄 디자인 변경 시 몇몇 게시글들은 적용이 안되는 문제 발생~~ &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/2
 * ~~ajax 비동기 전달 방식 사용시 댓글이 중복되어 출력되는 문제, 첫 댓글 입력시 새로고침 해야 댓글이 보이는 문제~~ &rightarrow; 해결 https://github.com/Jeongho0805/portfolio/issues/3
 
-</br>
+<br/>
 
 ## 생각해 볼 거리
 * 게시글 삭제 기능을 구현할 때 꼭 post method 방식으로 요청을 전달해야 하는가?
@@ -44,6 +45,8 @@
 * 회원 정보 네비바 표시
 ### 2022-10-18
 * 인터셉터 중복 호출 문제 해결
+### 2022-11-03
+* REST API 멤버 정보 조회 기능 구현
 
 
 
