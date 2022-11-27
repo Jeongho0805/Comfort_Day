@@ -56,32 +56,14 @@ public class BoardService {
                 board.getView()));
 
         return boardListDtoPage;
-
-        /*
-        Page<BoardListDto> boardListDtoPage = boardPage.map(new Function<Board, BoardListDto>() {
-            @Override
-            public BoardListDto apply(Board board) {
-                BoardListDto boardListDto = new BoardListDto();
-                boardListDto.setId(board.getId());
-                boardListDto.setView(board.getView());
-                boardListDto.setWriter(board.getMember().getName());
-                boardListDto.setTitle(board.getTitle());
-                boardListDto.setRegDate(timeReform(board.getRegTime()));
-                return boardListDto;
-            }
-        });
-         */
-
     }
 
-
-//    public List<BoardListDto> findAllBoardList() {
-//        List<Board> boardList = boardRepository.findAll();
-//        return toBoardListDto(boardList);
-//    }
+    public List<BoardListDto> findAllBoardListForApi() {
+        List<Board> boardList = boardRepository.findAll();
+        return toBoardListDto(boardList);
+    }
 
     public List<BoardListDto> toBoardListDto(List<Board> boardList) {
-
         ArrayList<BoardListDto> list = new ArrayList<>();
         for (Board board : boardList) {
             Long id = board.getId();
