@@ -65,4 +65,14 @@ public class BoardApiController {
         return ResponseEntity.ok().body("게시글 수정이 완료되었습니다.");
     }
 
+    @DeleteMapping("/boards/{boardId}")
+    public ResponseEntity<Object> deleteBoard(@PathVariable("boardId") Long boardId, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Long loginMemberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (!boardService.authorizationCheck(boardId, loginMemberId)) {
+            return ResponseEntity.badRequest().body("게시글 삭제 권한이 없습니다.");
+        }
+        boardService.deleteBoard(boardId);
+        return ResponseEntity.ok().body("게시글 삭제가 완료되었습니다.");
+    }
 }
