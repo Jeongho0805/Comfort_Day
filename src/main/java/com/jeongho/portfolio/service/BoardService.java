@@ -119,7 +119,7 @@ public class BoardService {
      * 3. 다르면 false 반환
      * 4. if문에 해당하지 않으면 true 반환
      */
-    public boolean AuthorizationCheck(Long boardId, Long loginMemberId) {
+    public boolean authorizationCheck(Long boardId, Long loginMemberId) {
         Board board = boardRepository.findById(boardId).get();
         Long findMemberId = board.getMember().getId();
         if(loginMemberId != findMemberId) {

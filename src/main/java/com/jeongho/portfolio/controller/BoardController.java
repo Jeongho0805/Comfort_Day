@@ -92,7 +92,7 @@ public class BoardController {
         HttpSession session = request.getSession(false);
         Long loginMemberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
         // 삭제 권한 인가 확인
-        if(!boardService.AuthorizationCheck(boardId, loginMemberId)) {
+        if(!boardService.authorizationCheck(boardId, loginMemberId)) {
             redirectAttributes.addFlashAttribute("errorMessage", "해당 게시물의 삭제 권한이 없습니다.");
             return "redirect:/board/dtl/"+boardId;
         }
@@ -112,7 +112,7 @@ public class BoardController {
         // 세션에 저장된 memberId 반환
         Long loginMemberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
         // 수정 권한이 있는지 인가 확인
-        if(!boardService.AuthorizationCheck(boardId, loginMemberId)) {
+        if(!boardService.authorizationCheck(boardId, loginMemberId)) {
             redirectAttributes.addFlashAttribute("errorMessage", "해당 게시물의 수정 권한이 없습니다.");
             return "redirect:/board/dtl/"+boardId;
         }
