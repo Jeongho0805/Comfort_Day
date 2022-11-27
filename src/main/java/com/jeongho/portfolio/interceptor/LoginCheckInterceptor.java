@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.thymeleaf.util.StringUtils;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,11 +18,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("인증 체크 인터셉터 실행 여부 파악 {}", requestURI);
 
         HttpSession session = request.getSession(false);
-
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            log.info("cookie 이름 -> {}", cookie.getName());
-        }
 
         log.info("세션정보 확인 -> {}",  session.getAttribute(SessionConst.LOGIN_MEMBER));
 
