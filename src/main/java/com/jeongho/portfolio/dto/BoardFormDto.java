@@ -21,6 +21,11 @@ public class BoardFormDto {
     public BoardFormDto() {
     }
 
+    public BoardFormDto(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public static BoardFormDto toDto(Board board) {
         return BoardFormDto.builder()
                 .title(board.getTitle())

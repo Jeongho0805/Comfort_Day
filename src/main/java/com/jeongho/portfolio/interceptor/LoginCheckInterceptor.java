@@ -19,8 +19,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession(false);
 
-        log.info("세션정보 확인 -> {}",  session.getAttribute(SessionConst.LOGIN_MEMBER));
-
         if (StringUtils.contains(requestURI, "/api")) {
             if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
                 return false;

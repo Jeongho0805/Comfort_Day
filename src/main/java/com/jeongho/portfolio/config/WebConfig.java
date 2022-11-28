@@ -22,13 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/*.css","/api/**", "/*.ico", "/css/layout1.css","/comment/update");
-
     }
 }
-    // 인터셉터에서 서비스 레이어를 사용하기 위한 Bean 생성, ex) Bean없이 new를 통한 객체생성 시, SrpingContainer 관리 범위에 들지 못한다.
-    // -> 빈 활용한 등록시 해당 인터셉터가 2번 호출되는 문제 발생
-//    @Bean
-//    public MemberInfoInterceptor memberInfoInterceptor() {
-//        return new MemberInfoInterceptor();
-//    }
+
 
