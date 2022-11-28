@@ -19,30 +19,18 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(MemberFormDto memberFormDto){
-        try {
-            validateDuplicateMember(memberFormDto.getEmail());
-        } catch (IllegalStateException e) {
-            return null;
-        }
+        validateDuplicateMember(memberFormDto.getEmail());
         Member member = Member.createMember(memberFormDto);
         return memberRepository.save(member);
     }
 
-    /**
-     * 로그인 기능 구현
-     */
-    public Member login(String loginId, String password) {
+    public Member login(String loginId, String passwordInput) {
+        validateId(loginId);
         Member member = memberRepository.findByEmail(loginId);
-        if(member.getPassword().equals(password)) {
-            return member;
-        } else {
-            return null;
-        }
+        validatePassword(member.getPassword(), passwordInput);
+        return member;
     }
 
-    /**
-     * 세션으로 멤버 정보 조회
-     */
     public Member findMemberBySession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if(session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
@@ -54,12 +42,23 @@ public class MemberService {
         return findMember;
     }
 
-
-
     private void validateDuplicateMember(String email) {
         Member findMember = memberRepository.findByEmail(email);
         if(findMember!=null){
-            throw new IllegalStateException("이미 가입된 회원입니다.");
+            throw new IllegalArgumentException("이미 가입된 회원입니다.");
+        }
+    }
+
+    private void validateId(String loginId) {
+        Member member = memberRepository.findByEmail(loginId);
+        if (member == null) {
+            throw new IllegalArgumentException("등록된 아이디가 존재하지 않습니다.");
+        }
+    }
+
+    private void validatePassword(String password, String passwordInput) {
+        if (!password.equals(passwordInput)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
 }
