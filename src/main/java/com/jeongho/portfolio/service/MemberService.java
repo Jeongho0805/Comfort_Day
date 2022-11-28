@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Service
@@ -31,15 +30,12 @@ public class MemberService {
         return member;
     }
 
-    public Member findMemberBySession(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+    public Member findMemberBySession(HttpSession session) {
         if(session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             return null;
         }
         Long memberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        Member findMember = memberRepository.findById(memberId).get();
-
-        return findMember;
+        return memberRepository.findById(memberId).orElseThrow(IllegalArgumentException::new);
     }
 
     private void validateDuplicateMember(String email) {

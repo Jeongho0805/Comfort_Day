@@ -16,10 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,7 +28,16 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
-    // 세션 보유 여부 체크 로직
+    public Page<BoardListDto> findAllBoardList(int page, BoardSearchDto boardSearchDto) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("regTime").descending());
+        Page<Board> boardPage =  boardRepository.findBySearchQueryAndType(pageable, boardSearchDto);
+        return boardPage.map(BoardListDto::toDto);
+    }
+
+    public List<BoardListDto> findAllBoardListForApi() {
+        List<Board> boardList = boardRepository.findAll();
+        return boardList.stream().map(BoardListDto::toDto).collect(Collectors.toList());
+    }
 
     public void createNewBoard(BoardFormDto boardFormDto, Member member) {
         Board board = new Board(boardFormDto.getTitle(), boardFormDto.getContent());
@@ -38,72 +45,17 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    /**
-     * pageable 적용 게시판 리스트 찾기 로직
-     * page size를 10으로 하면 footer와 글쓰기 버튼이 겹치는 문제 발생
-     */
-    public Page<BoardListDto> findAllBoardList(int page, BoardSearchDto boardSearchDto) {
-        // 최근 작성 일 기준으로 정렬
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("regTime").descending());
-        // searchQuery -> null값일 경우와, 값이 있을 경우
-        Page<Board> boardPage =  boardRepository.findBySearchQueryAndType(pageable, boardSearchDto);
-
-        Page<BoardListDto> boardListDtoPage = boardPage.map(board -> new BoardListDto(
-                board.getId(),
-                board.getTitle(),
-                board.getMember().getName(),
-                timeReform(board.getRegTime()),
-                board.getView()));
-
-        return boardListDtoPage;
-    }
-
-    public List<BoardListDto> findAllBoardListForApi() {
-        List<Board> boardList = boardRepository.findAll();
-        return toBoardListDto(boardList);
-    }
-
-    public List<BoardListDto> toBoardListDto(List<Board> boardList) {
-        ArrayList<BoardListDto> list = new ArrayList<>();
-        for (Board board : boardList) {
-            Long id = board.getId();
-            String regDate = timeReform(board.getRegTime());
-            String title = board.getTitle();
-            String writer = board.getMember().getName();
-            int view = board.getView();
-            BoardListDto boardListDto = new BoardListDto(id, title, writer, regDate, view);
-            list.add(boardListDto);
-        }
-
-        return list;
-    }
-
-    public String timeReform(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm:ss"));
-    }
-
     public BoardDtlDto findBoardDtlDto(Long boardId) {
-        Board board = boardRepository.findById(boardId).get();
-        String title = board.getTitle();
-        String content = board.getContent();
-        String regDate = timeReform(board.getRegTime());
-        String writer = board.getMember().getName();
-        return new BoardDtlDto(writer, title, content, regDate);
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("해당하는 게시판이 없습니다."));
+        return BoardDtlDto.toDto(board);
     }
 
-    public boolean checkViewCount(Cookie[] cookies, Long boardId) {
-
-        if(cookies == null) {
-            return false;
-        }
-
+    public boolean hasCookie(Cookie[] cookies, Long boardId) {
         for (Cookie cookie : cookies) {
-
-            if(cookie.getName().equals("viewCheck"+boardId)) {
+            if (cookie.getName().equals("viewCheck" + boardId)) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -111,50 +63,30 @@ public class BoardService {
         boardRepository.updateViewCount(boardId);
     }
 
-
-    /**
-     * 삭제 인가 체크
-     * 1. boardId에 저장된 member 정보 확인
-     * 2. 받아온 loginMemberId와 member정보가 같은지 확인
-     * 3. 다르면 false 반환
-     * 4. if문에 해당하지 않으면 true 반환
-     */
     public boolean authorizationCheck(Long boardId, Long loginMemberId) {
-        Board board = boardRepository.findById(boardId).get();
+        Board board = boardRepository.findById(boardId).orElseThrow(IllegalStateException::new);
         Long findMemberId = board.getMember().getId();
-        if(loginMemberId != findMemberId) {
+        if (loginMemberId != findMemberId) {
             return false;
         }
         return true;
     }
 
-    /**
-     * 삭제 기능 구현
-     *
-     */
     public void deleteBoard(Long boardId) {
         boardRepository.deleteById(boardId);
     }
 
-    /**
-     * update기능을 위한 boardFormDto에 데이터 담는 작업
-     */
     public BoardFormDto findBoardFormDto(Long boardId) {
-        BoardFormDto boardFormDto = new BoardFormDto();
-        Board board = boardRepository.findById(boardId).get();
-        boardFormDto.setTitle(board.getTitle());
-        boardFormDto.setContent(board.getContent());
-        return boardFormDto;
+        Board board = boardRepository.findById(boardId).orElseThrow(IllegalArgumentException::new);
+        return BoardFormDto.toDto(board);
     }
 
     public void updateBoard(Long boardId, BoardFormDto boardFormDto) {
-        Board board = boardRepository.findById(boardId).get();
+        Board board = boardRepository.findById(boardId).orElseThrow(IllegalArgumentException::new);
         board.updateBoard(boardFormDto.getTitle(), boardFormDto.getContent());
     }
 
-    /**
-     * 댓글 작성 기능
-     */
+
     public void createComment(CommentDto commentDto, Long loginMemberId) {
 
         Long boardId = commentDto.getBoardId();
@@ -167,18 +99,9 @@ public class BoardService {
         commentRepository.save(comment);
     }
 
-    public List<CommentDto> viewAllComment(Long boardId) {
-        Board findBoard = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException());
-        List<CommentDto> commentDtoList = new ArrayList<>();
-        for (Comment comment : findBoard.getCommentList()) {
-            Long commentId = comment.getId();
-            String content = comment.getContent();
-            String username = comment.getMember().getName();
-            CommentDto commentDto = new CommentDto(commentId, content, username);
-            commentDtoList.add(commentDto);
-        }
-
-        return commentDtoList;
+    public List<CommentDto> findAllCommentDtos(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException());
+        return board.getCommentList().stream().map(CommentDto::toDto).collect(Collectors.toList());
     }
 
     public void updateComment(CommentDto commentDto) {

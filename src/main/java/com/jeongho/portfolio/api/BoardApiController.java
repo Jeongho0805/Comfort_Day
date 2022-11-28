@@ -46,7 +46,7 @@ public class BoardApiController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        Member member = memberService.findMemberBySession(request);
+        Member member = memberService.findMemberBySession(request.getSession());
         boardService.createNewBoard(boardFormDto, member);
         return ResponseEntity.ok().body("새로운 게시글이 생성되었습니다.");
     }

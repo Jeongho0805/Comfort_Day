@@ -1,10 +1,14 @@
 package com.jeongho.portfolio.dto;
 
+import com.jeongho.portfolio.entity.Board;
+import com.jeongho.portfolio.util.TimeReformer;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class BoardListDto {
 
     public BoardListDto() {
@@ -26,5 +30,15 @@ public class BoardListDto {
         this.writer = writer;
         this.regDate = regDate;
         this.view = view;
+    }
+
+    public static BoardListDto toDto(Board board) {
+        return BoardListDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .writer(board.getMember().getName())
+                .regDate(TimeReformer.getBoardRegisteredTime(board.getRegTime()))
+                .view(board.getView())
+                .build();
     }
 }
