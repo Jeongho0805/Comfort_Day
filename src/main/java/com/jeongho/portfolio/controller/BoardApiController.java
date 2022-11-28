@@ -1,4 +1,4 @@
-package com.jeongho.portfolio.api;
+package com.jeongho.portfolio.controller;
 
 import com.jeongho.portfolio.constant.SessionConst;
 import com.jeongho.portfolio.dto.BoardFormDto;
