@@ -60,20 +60,17 @@
 
                 $.ajax({
                     type : "POST",
-                    url : "/comment/new",
+                    url : "/api/comments",
                     cache : false,
                     data : JSON.stringify(data),
                     contentType : "application/json; charset=utf-8",
-                    dataType : "json",
-                    success : function() {
+                    success : function(data) {
                         $('#card-comment').html('');
                         $('#card-comment').load(location.href+' #card-comment');
-
                     },
-                    fail : function () {
+                    error : function () {
                         alert("로그인 후 이용해주세요.")
                     }
-
                 });
             })
 
@@ -93,8 +90,8 @@
                     console.log(data.content);
 
                     $.ajax({
-                        type : "POST",
-                        url : "/comment/update",
+                        type : "PUT",
+                        url : "/api/comments",
                         cache : false,
                         data : JSON.stringify(data),
                         contentType : "application/json; charset=utf-8",
@@ -104,7 +101,7 @@
                             $('#card-comment').load(location.href+' #card-comment');
 
                         },
-                        fail : function () {
+                        error : function () {
                             alert("통신에 실패했습니다.")
                         }
                     });
@@ -125,8 +122,8 @@
                     };
 
                     $.ajax({
-                        type: "POST",
-                        url: "/comment/delete",
+                        type: "DELETE",
+                        url: "/api/comments",
                         cache: false,
                         data: JSON.stringify(data),
                         contentType: "application/json; charset=utf-8",

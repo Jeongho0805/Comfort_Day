@@ -3,11 +3,13 @@ package com.jeongho.portfolio.dto;
 import com.jeongho.portfolio.entity.Comment;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
 public class CommentDto {
 
     Long boardId;

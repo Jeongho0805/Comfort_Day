@@ -3,7 +3,7 @@ package com.jeongho.portfolio.controller;
 import com.jeongho.portfolio.constant.SessionConst;
 import com.jeongho.portfolio.dto.*;
 import com.jeongho.portfolio.entity.Member;
-import com.jeongho.portfolio.service.ApiMemberService;
+import com.jeongho.portfolio.service.MemberApiService;
 import com.jeongho.portfolio.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class MemberApiController {
 
-    private final ApiMemberService apiMemberService;
+    private final MemberApiService apiMemberService;
     private final MemberService memberService;
 
     @GetMapping("/members")

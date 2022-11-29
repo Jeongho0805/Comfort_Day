@@ -31,11 +31,8 @@ public class MemberService {
     }
 
     public Member findMemberBySession(HttpSession session) {
-        if(session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
-            return null;
-        }
         Long memberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        return memberRepository.findById(memberId).orElseThrow(IllegalArgumentException::new);
+        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당하는 회원이 없습니다."));
     }
 
     private void validateDuplicateMember(String email) {

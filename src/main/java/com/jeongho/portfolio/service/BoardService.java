@@ -2,7 +2,6 @@ package com.jeongho.portfolio.service;
 
 import com.jeongho.portfolio.dto.*;
 import com.jeongho.portfolio.entity.Board;
-import com.jeongho.portfolio.entity.Comment;
 import com.jeongho.portfolio.entity.Member;
 import com.jeongho.portfolio.repository.BoardRepository;
 import com.jeongho.portfolio.repository.CommentRepository;
@@ -86,53 +85,12 @@ public class BoardService {
         board.updateBoard(boardFormDto.getTitle(), boardFormDto.getContent());
     }
 
-
-    public void createComment(CommentDto commentDto, Long loginMemberId) {
-
-        Long boardId = commentDto.getBoardId();
-        String content = commentDto.getContent();
-        Member member = memberRepository.findById(loginMemberId).orElseThrow(() -> new IllegalStateException("해당 멤버가 없습니다."));
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException("해당 게시물을 찾을 수 없습니다."));
-
-        Comment comment = new Comment(content);
-        comment.setMemberAndBoard(board, member);
-        commentRepository.save(comment);
-    }
-
     public List<CommentDto> findAllCommentDtos(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException());
         return board.getCommentList().stream().map(CommentDto::toDto).collect(Collectors.toList());
     }
 
-    public void updateComment(CommentDto commentDto) {
-        Comment comment = findCommentByDto(commentDto);
-
-        if (!isEqualWriter(comment, commentDto)) {
-            throw new IllegalStateException("작성자와 수정자가 일치하지 않습니다.");
-        }
-        comment.updateComment(commentDto.getContent());
+    public Board findBoardById(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("해당 하는 게시물이 존재하지 않습니다."));
     }
-
-    public void deleteComment(CommentDto commentDto) {
-        Comment comment = findCommentByDto(commentDto);
-
-        if (!isEqualWriter(comment, commentDto)) {
-            throw new IllegalStateException("작성자와 삭제를 요청하는 회원이 일치하지 않습니다.");
-        }
-        commentRepository.delete(comment);
-    }
-
-    private boolean isEqualWriter(Comment comment, CommentDto commentDto) {
-        String originWriter = comment.getMember().getName();
-        String writer = commentDto.getUsername();
-        return originWriter.equals(writer);
-    }
-
-    private Comment findCommentByDto(CommentDto commentDto) {
-        Long commentId = commentDto.getCommentId();
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalStateException("해당 댓글을 찾을 수 없습니다"));
-        return comment;
-    }
-
-
 }

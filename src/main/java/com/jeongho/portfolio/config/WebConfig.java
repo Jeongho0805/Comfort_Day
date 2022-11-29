@@ -16,12 +16,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/","/api/new-member","/api/login","/api/logout","/api/board/list-all", "/api/board/list-page",
                         "/practice", "/member/new", "/member/login", "/board/list", "/board/dtl/**", "/css/**", "/static/css/layout1.css",
-                        "/*.css", "/templates/layouts/layout1.html", "/*.ico", "/resources/**","/comment/update");
+                        "/*.css", "/templates/layouts/layout1.html", "/*.ico", "/resources/**","/comment/update","/error");
 
         registry.addInterceptor(new MemberInfoInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/*.css","/api/**", "/*.ico", "/css/layout1.css","/comment/update");
+                .excludePathPatterns("/*.css","/api/**", "/*.ico", "/css/layout1.css","/comment/update","/error");
     }
 }
 
