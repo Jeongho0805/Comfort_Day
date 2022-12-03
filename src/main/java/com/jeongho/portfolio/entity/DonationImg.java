@@ -1,5 +1,6 @@
 package com.jeongho.portfolio.entity;
 
+import com.jeongho.portfolio.dto.FileUploaderDto;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -20,16 +21,19 @@ public class DonationImg {
 
     private String imgUrl; // 이미지 조회 경로
 
-    private String repimgYn; // 대표 이미지 여부
 
     // Donation과 단방향 연관관계 매핑
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donation_id")
     private Donation donation;
 
-    public void updateItemImg(String oriImgName, String imgName, String imgUrl) {
-        this.oriImgName = oriImgName;
-        this.imgName = imgName;
-        this.imgUrl = imgUrl;
+    public void updateItemImg(FileUploaderDto fileUploaderDto) {
+        this.oriImgName = fileUploaderDto.getOriginFileName();
+        this.imgName = fileUploaderDto.getUploadFileName();
+        this.imgUrl = fileUploaderDto.getImgUrl();
+    }
+
+    public void setDonation(Donation donation) {
+        this.donation = donation;
     }
 }

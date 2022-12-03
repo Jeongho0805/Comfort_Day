@@ -80,6 +80,7 @@
             updateBtns.forEach(function(item) {
                 item.addEventListener('click', function() {
                     let form = this.closest('form')
+                    console.log(form);
                     let data = {
                         commentId : form.querySelector('#comment-id').value,
                         username : form.querySelector('#comment-author').value,
@@ -88,6 +89,7 @@
                     };
 
                     console.log(data.content);
+                    console.log(data.username);
 
                     $.ajax({
                         type : "PUT",
@@ -95,14 +97,13 @@
                         cache : false,
                         data : JSON.stringify(data),
                         contentType : "application/json; charset=utf-8",
-                        dataType : "json",
                         success : function() {
                             $('#card-comment').html('');
                             $('#card-comment').load(location.href+' #card-comment');
 
                         },
                         error : function () {
-                            alert("통신에 실패했습니다.")
+                            alert("로그인 후 이용해주세요.")
                         }
                     });
                 });
@@ -113,13 +114,17 @@
             // 모든 삭제 버튼 이벤트 등록
             deleteBtns.forEach(function(item) {
                 item.addEventListener('click', function () {
-                    let comment_view = this.closest('#comment-view')
+                    let comment_view = this.closest('form')
+                    console.log(comment_view);
                     let data = {
                         commentId: comment_view.querySelector('#commentId').value,
-                        username: comment_view.querySelector('#commentWriter').value,
-                        content : comment_view.querySelector('#commentContent').value,
+                        username: comment_view.querySelector('#commentWriter').text,
+                        content : comment_view.querySelector('#commentContentInList').value,
                         boardId: [[${boardId}]]
                     };
+                    console.log(data.commentId);
+                    console.log(data.username);
+                    console.log(data.content);
 
                     $.ajax({
                         type: "DELETE",
@@ -127,13 +132,12 @@
                         cache: false,
                         data: JSON.stringify(data),
                         contentType: "application/json; charset=utf-8",
-                        dataType: "json",
                         success: function () {
                             $('#card-comment').html('');
                             $('#card-comment').load(location.href + ' #card-comment');
 
                         },
-                        fail: function () {
+                        error: function () {
                             alert("통신에 실패했습니다.")
                         }
                     });
@@ -182,22 +186,24 @@
                     <div class="list-group" th:each="comment : ${commentDtoList}">
 <!--                        <div id="list-group-item d-flex justify-content-between">-->
                             <!--  댓글 보여지는 부분 -->
-                        <div id="comment-view" th:attrappend="id=${commentStat.index}"  th:class="|collapse multi-collapse-${commentStat.index} show|">
-                            <div id="commentId" style="display: none" th:value="${comment.commentId}">commentId</div>
-                            <div id="commentWriter" th:text="${comment.username}">작성자 정보</div>
-                            <div class="parent">
-                                <div id="commentContentInList" class="first" th:text="${comment.content}">댓글 내용</div>
-                                <!-- 작성자와 회원정보가 일치하는 경우에만 수정, 삭제 버튼 보여준다 -->
-                                <div class="second" th:if="${comment.username == memberName}">
-                                    <button id="commentUpdateBtn" class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" th:data-bs-target="|.multi-collapse-${commentStat.index}|" aria-expanded="false"  th:aria-controls="|comment-view${commentStat.index} comment-form${commentStat.index}|">
-                                        수정
-                                    </button>
-                                    <button id="commentDeleteBtn" class="btn btn-link btn-sm comment-delete-btn" type="button">
-                                        삭제
-                                    </button>
+                        <form>
+                            <div id="comment-view" th:attrappend="id=${commentStat.index}"  th:class="|collapse multi-collapse-${commentStat.index} show|">
+                                <div id="commentId" style="display: none" th:value="${comment.commentId}">commentId</div>
+                                <div id="commentWriter" th:text="${comment.username}">작성자 정보</div>
+                                <div class="parent">
+                                    <div id="commentContentInList" class="first" th:text="${comment.content}">댓글 내용</div>
+                                    <!-- 작성자와 회원정보가 일치하는 경우에만 수정, 삭제 버튼 보여준다 -->
+                                    <div class="second" th:if="${comment.username == memberName}">
+                                        <button id="commentUpdateBtn" class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" th:data-bs-target="|.multi-collapse-${commentStat.index}|" aria-expanded="false"  th:aria-controls="|comment-view${commentStat.index} comment-form${commentStat.index}|">
+                                            수정
+                                        </button>
+                                        <button id="commentDeleteBtn" class="btn btn-link btn-sm comment-delete-btn" type="button">
+                                            삭제
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
 <!--                        </div>-->
                         <form id="comment-form" th:attrappend="id=${commentStat.index}" th:class="|collapse multi-collapse-${commentStat.index}|">
                             <div class="form-group">

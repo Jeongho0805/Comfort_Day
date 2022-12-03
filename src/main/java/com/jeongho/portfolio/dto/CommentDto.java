@@ -12,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentDto {
 
-    Long boardId;
+    private Long boardId;
 
-    Long commentId;
-    String content;
-    String username;
+    private Long commentId;
+    private String content;
+    private String username;
 
     public CommentDto(Long boardId, Long commentId, String content, String username) {
         this.boardId = boardId;
