@@ -1,6 +1,7 @@
 package com.jeongho.portfolio.service;
 
 import com.jeongho.portfolio.dto.DonationFormDto;
+import com.jeongho.portfolio.dto.DonationListDto;
 import com.jeongho.portfolio.dto.FileUploaderDto;
 import com.jeongho.portfolio.entity.Donation;
 import com.jeongho.portfolio.entity.DonationImg;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,5 +41,19 @@ public class DonationService {
             donationImg.setDonation(donation);
             donationImgRepository.save(donationImg);
         }
+    }
+
+    public List<DonationListDto> findAllDonations() {
+        List<Donation> donations = donationRepository.findAll();
+        List<DonationListDto> donationListDtos = new ArrayList<>();
+        for (Donation donation : donations) {
+            List<DonationImg> donationImgs = donationImgRepository.findByDonation(donation);
+            String imgName = donationImgs.get(0).getImgName();
+            donationListDtos.add(DonationListDto.toDto(donation, imgName));
+        }
+        return donationListDtos;
+    }
+
+    public void findDonationDtl(Long donationId) {
     }
 }

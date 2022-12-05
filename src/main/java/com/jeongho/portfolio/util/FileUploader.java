@@ -34,7 +34,7 @@ public class FileUploader {
         String imgUrl = getFullPath(uploadeFileName);
 
         multipartFile.transferTo(new File(imgUrl));
-        return new FileUploaderDto(originFileName,uploadeFileName, imgUrl);
+        return new FileUploaderDto(originFileName, uploadeFileName, imgUrl);
     }
 
     private String getUploadeFileName(String originFileName) {

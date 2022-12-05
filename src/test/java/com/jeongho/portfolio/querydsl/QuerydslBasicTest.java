@@ -1,6 +1,8 @@
 package com.jeongho.portfolio.querydsl;
 
+import com.jeongho.portfolio.dto.DonationListDto;
 import com.jeongho.portfolio.entity.Member;
+import com.jeongho.portfolio.repository.DonationRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,9 @@ public class QuerydslBasicTest {
     EntityManager em;
 
     JPAQueryFactory queryFactory;
+
+    @Autowired
+    DonationRepository donationRepository;
 
     @BeforeEach
     public void before() {
@@ -96,5 +101,11 @@ public class QuerydslBasicTest {
 
         result.getTotal();
         List<Member> content = result.getResults();
+    }
+
+    @Test
+    void 쿼리프로젝션_테스트() {
+        List<DonationListDto> allDonationList = donationRepository.findAllDonationList();
+        System.out.println(allDonationList);
     }
 }

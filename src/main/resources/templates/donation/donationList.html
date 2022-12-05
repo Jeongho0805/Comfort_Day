@@ -59,6 +59,10 @@
         #donation-ongoing{
             margin-right: 2rem;
         }
+        .donationList{
+            margin-left: 5rem;
+            margin-right: 5rem;
+        }
 
     </style>
 </head>
@@ -76,6 +80,23 @@
             <a class="item" href="">청년</a>
             <a class="item" href="">장애인</a>
             <a class="item" href="">어르신</a>
+        </div>
+        <div class="row donationList">
+            <th:block th:each="donation : ${donationListDtos}">
+                <div class="col-md-4 margin">
+                    <div class="card">
+                        <a th:href="'/donation/dtl/' +${donation.id}" class="text-dark">
+                            <img th:src="'/images/' + ${donation.getImgName()}"  class="card-img-top" th:alt="${donation.getImgName()}" height="400">
+                            <div class="card-body">
+                                <h4 class="card-title" th:text="${donation.getTitle}">아이템 이름</h4>
+                                <p class="card-text" th:text="${donation.getTargetMoney()}"></p>
+                                <p class="card-text" th:text="${donation.getWriter()}"></p>
+                                <progress th:value="${donation.getCurrentMoeny()}" th:max="${donation.getTargetMoney()}"></progress>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </div>
 </body>

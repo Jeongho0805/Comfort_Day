@@ -3,11 +3,13 @@ package com.jeongho.portfolio.entity;
 import com.jeongho.portfolio.constant.DonationStatus;
 import com.jeongho.portfolio.dto.DonationFormDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Donation {
 
     @Id
