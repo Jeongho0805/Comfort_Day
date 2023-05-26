@@ -2,10 +2,8 @@ package com.jeongho.portfolio.config;
 
 import com.jeongho.portfolio.interceptor.LoginCheckInterceptor;
 import com.jeongho.portfolio.interceptor.MemberInfoInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -24,15 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/*.css","/api/**", "/*.ico", "/css/layout1.css","/comment/update","/error");
-    }
-
-    @Value("${uploadePath}")
-    String uploadePath;
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations(uploadePath);
     }
 }
 

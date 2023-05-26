@@ -1,8 +1,6 @@
 package com.jeongho.portfolio.querydsl;
 
-import com.jeongho.portfolio.dto.DonationListDto;
 import com.jeongho.portfolio.entity.Member;
-import com.jeongho.portfolio.repository.DonationRepository;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
