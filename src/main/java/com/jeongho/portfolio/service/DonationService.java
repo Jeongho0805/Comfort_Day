@@ -1,5 +1,6 @@
 package com.jeongho.portfolio.service;
 
+import com.jeongho.portfolio.dto.DonationDtlDto;
 import com.jeongho.portfolio.dto.DonationFormDto;
 import com.jeongho.portfolio.dto.DonationListDto;
 import com.jeongho.portfolio.dto.FileUploaderDto;
@@ -54,6 +55,9 @@ public class DonationService {
         return donationListDtos;
     }
 
-    public void findDonationDtl(Long donationId) {
+    public DonationDtlDto findDonationDtl(Long donationId) {
+        Donation donation = donationRepository.findById(donationId).orElseThrow(() -> new IllegalArgumentException("해당하는 기부 게시물이 없습니다."));
+        List<DonationImg> donationImgs = donationImgRepository.findByDonation(donation);
+        return DonationDtlDto.toDto(donation, donationImgs);
     }
 }

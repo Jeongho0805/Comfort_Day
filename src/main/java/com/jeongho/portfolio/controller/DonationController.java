@@ -1,5 +1,6 @@
 package com.jeongho.portfolio.controller;
 
+import com.jeongho.portfolio.dto.DonationDtlDto;
 import com.jeongho.portfolio.dto.DonationFormDto;
 import com.jeongho.portfolio.dto.DonationListDto;
 import com.jeongho.portfolio.entity.Member;
@@ -57,9 +58,9 @@ public class DonationController {
     }
 
     @GetMapping("/dtl/{donationId}")
-    public String getDonationDtl(@PathVariable Long donationId) {
-        donationService.findDonationDtl(donationId);
-
-
+    public String getDonationDtl(@PathVariable Long donationId, Model model) {
+        DonationDtlDto donationDtlDto = donationService.findDonationDtl(donationId);
+        model.addAttribute("donationDtlDto", donationDtlDto);
+        return "donation/dtl";
     }
 }

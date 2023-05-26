@@ -50,6 +50,9 @@ public class BoardService {
     }
 
     public boolean hasCookie(Cookie[] cookies, Long boardId) {
+        if (cookies == null) {
+            return false;
+        }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("viewCheck" + boardId)) {
                 return true;
