@@ -1,4 +1,4 @@
-package com.jeongho.portfolio.controller;
+package com.jeongho.portfolio.controller.page;
 
 import com.jeongho.portfolio.constant.SessionConst;
 import com.jeongho.portfolio.dto.LoginFormDto;
@@ -75,7 +75,7 @@ public class MemberController {
     private void setSessionAttributes(HttpServletRequest request, Member loginMember) {
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember.getId());
-        session.setAttribute(SessionConst.LOGIN_MEMBER_NAME, loginMember.getName());
+        session.setAttribute(SessionConst.LOGIN_MEMBER_name, loginMember.getNickname());
     }
 
     @GetMapping("/logout")

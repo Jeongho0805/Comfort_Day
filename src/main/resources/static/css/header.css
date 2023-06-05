@@ -1,0 +1,16 @@
+.nav-item {
+    margin-right: 30px;
+}
+.navbar {
+    font-weight: bold;
+    font-family: 'Lora', serif;
+}
+
+.nav-link {
+    color:  lightpink !important;;
+}
+
+#header-home {
+    color: lightpink !important;;
+    margin-left: 1rem;
+}

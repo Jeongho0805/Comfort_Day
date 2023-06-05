@@ -4,7 +4,6 @@ import com.jeongho.portfolio.dto.*;
 import com.jeongho.portfolio.entity.Board;
 import com.jeongho.portfolio.entity.Member;
 import com.jeongho.portfolio.repository.BoardRepository;
-import com.jeongho.portfolio.repository.CommentRepository;
 import com.jeongho.portfolio.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +24,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
 
     public Page<BoardListDto> findAllBoardList(int page, BoardSearchDto boardSearchDto) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("regTime").descending());
@@ -88,10 +86,6 @@ public class BoardService {
         board.updateBoard(boardFormDto.getTitle(), boardFormDto.getContent());
     }
 
-    public List<CommentDto> findAllCommentDtos(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalStateException());
-        return board.getCommentList().stream().map(CommentDto::toDto).collect(Collectors.toList());
-    }
 
     public Board findBoardById(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("해당 하는 게시물이 존재하지 않습니다."));

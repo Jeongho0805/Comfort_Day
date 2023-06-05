@@ -28,7 +28,7 @@ public class BoardDtlDto {
 
     public static BoardDtlDto toDto(Board board) {
         return BoardDtlDto.builder()
-                .writer(board.getMember().getName())
+                .writer(board.getMember().getNickname())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .regDate(TimeReformer.getBoardRegisteredTime(board.getRegTime()))

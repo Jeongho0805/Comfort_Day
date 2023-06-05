@@ -1,7 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+        body {
+            overflow: hidden;
+            background-image: url("/images/main.png");
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        #main-text {
+            font-family: 'Lora', serif;
+            font-weight: bold;
+            color: lightpink;
+            text-align: right;
+            margin-top: 3rem;
+            margin-right: 2rem;
+        }
+    </style>
+</th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
         $(document).ready(function() {
@@ -14,7 +38,7 @@
 </th:block>
 
 <div layout:fragment="content">
-    <h1>메인페이지</h1>
+    <h1 id="main-text">Comport Of The Day <br> </h1>
 </div>
 
 </html>

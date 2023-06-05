@@ -36,7 +36,7 @@ public class BoardListDto {
         return BoardListDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
-                .writer(board.getMember().getName())
+                .writer(board.getMember().getNickname())
                 .regDate(TimeReformer.getBoardRegisteredTime(board.getRegTime()))
                 .view(board.getView())
                 .build();

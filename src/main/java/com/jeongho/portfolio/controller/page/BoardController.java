@@ -1,7 +1,10 @@
-package com.jeongho.portfolio.controller;
+package com.jeongho.portfolio.controller.page;
 
 import com.jeongho.portfolio.constant.SessionConst;
-import com.jeongho.portfolio.dto.*;
+import com.jeongho.portfolio.dto.BoardDtlDto;
+import com.jeongho.portfolio.dto.BoardFormDto;
+import com.jeongho.portfolio.dto.BoardListDto;
+import com.jeongho.portfolio.dto.BoardSearchDto;
 import com.jeongho.portfolio.entity.Member;
 import com.jeongho.portfolio.service.BoardService;
 import com.jeongho.portfolio.service.MemberService;
@@ -19,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -64,10 +66,8 @@ public class BoardController {
         }
         /* 게시글 상세 화면 처리 로직 */
         BoardDtlDto boardDtlDto = boardService.findBoardDtlDto(boardId);
-        List<CommentDto> commentDtoList = boardService.findAllCommentDtos(boardId);
         model.addAttribute("boardDtlDto", boardDtlDto);
         model.addAttribute("boardId", boardId);
-        model.addAttribute("commentDtoList", commentDtoList);
         return "board/dtl";
     }
 

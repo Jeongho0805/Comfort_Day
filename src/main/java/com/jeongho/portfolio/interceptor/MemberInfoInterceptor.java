@@ -17,13 +17,13 @@ public class MemberInfoInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("requestURI = {}", requestURI);
         HttpSession session = request.getSession(false);
-        if(session != null && session.getAttribute(SessionConst.LOGIN_MEMBER_NAME) != null) {
-            String memberName = (String) session.getAttribute(SessionConst.LOGIN_MEMBER_NAME);
-            log.info("postHandle 호출, memberName = {} ", memberName);
+        if(session != null && session.getAttribute(SessionConst.LOGIN_MEMBER_name) != null) {
+            String membername = (String) session.getAttribute(SessionConst.LOGIN_MEMBER_name);
+            log.info("postHandle 호출, membername = {} ", membername);
             log.info("modelAndView null포인트 오류 확인 -> {}", modelAndView);
             // comment/new는 api호출 및 응답이므로 modelandView가 없어서 null포인트 오류가 터진다.
             if(!requestURI.equals("/comment/new")) {
-                modelAndView.addObject("memberName", memberName);
+                modelAndView.addObject("membername", membername);
             }
         }
     }

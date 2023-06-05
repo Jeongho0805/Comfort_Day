@@ -7,13 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Member findByEmail(String email);
+    Member findByAccount(String account);
     List<Member> findAll();
 
     @Query("select distinct m from Member m join fetch m.boardList")
     List<Member> findAllWithBoard();
-
-    @Query("select distinct m from Member m join fetch m.commentList")
-    List<Member> findAllWithComment();
-
 }

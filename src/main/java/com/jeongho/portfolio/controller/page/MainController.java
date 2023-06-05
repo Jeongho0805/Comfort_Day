@@ -1,4 +1,4 @@
-package com.jeongho.portfolio.controller;
+package com.jeongho.portfolio.controller.page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

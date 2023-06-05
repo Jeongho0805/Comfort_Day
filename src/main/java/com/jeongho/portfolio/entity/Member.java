@@ -2,33 +2,31 @@ package com.jeongho.portfolio.entity;
 
 import com.jeongho.portfolio.constant.Role;
 import com.jeongho.portfolio.dto.MemberFormDto;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "member")
+
 @Getter
-@Setter
+@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_name")
-    private String name;
+    private String nickname;
 
     @Column(unique = true)
-    private String email;
+    private String account;
 
     private String password;
-
-    private String address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -36,24 +34,14 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Board> boardList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Comment> commentList = new ArrayList<>();
 
-    // DTO에서 entity로 변환 메서드
     public static Member createMember(MemberFormDto memberFormDto) {
-        Member member = new Member();
-        member.setAddress(memberFormDto.getAddress());
-        member.setName(memberFormDto.getName());
-        member.setEmail(memberFormDto.getEmail());
-        member.setPassword(memberFormDto.getPassword());
-        member.setRole(Role.USER);
-
-        return member;
+        return Member.builder()
+                .nickname(memberFormDto.getNickname())
+                .account(memberFormDto.getAccount())
+                .password(memberFormDto.getPassword())
+                .role(Role.USER)
+                .build();
 
     }
-
-
-
-
-
 }

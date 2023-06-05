@@ -18,14 +18,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(MemberFormDto memberFormDto){
-        validateDuplicateMember(memberFormDto.getEmail());
+        validateDuplicateMember(memberFormDto.getNickname());
         Member member = Member.createMember(memberFormDto);
         return memberRepository.save(member);
     }
 
     public Member login(String loginId, String passwordInput) {
         validateId(loginId);
-        Member member = memberRepository.findByEmail(loginId);
+        Member member = memberRepository.findByAccount(loginId);
         validatePassword(member.getPassword(), passwordInput);
         return member;
     }
@@ -36,14 +36,14 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(String email) {
-        Member findMember = memberRepository.findByEmail(email);
+        Member findMember = memberRepository.findByAccount(email);
         if(findMember!=null){
             throw new IllegalArgumentException("이미 가입된 회원입니다.");
         }
     }
 
     private void validateId(String loginId) {
-        Member member = memberRepository.findByEmail(loginId);
+        Member member = memberRepository.findByAccount(loginId);
         if (member == null) {
             throw new IllegalArgumentException("등록된 아이디가 존재하지 않습니다.");
         }
