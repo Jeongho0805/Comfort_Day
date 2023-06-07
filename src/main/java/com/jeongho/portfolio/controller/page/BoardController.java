@@ -39,7 +39,6 @@ public class BoardController {
         model.addAttribute("maxPage",5);
         return "board/list";
     }
-
     @GetMapping("/new")
     public String boardForm(Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         model.addAttribute("boardFormDto", new BoardFormDto());
