@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+        #registerForm {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: 'Lora', serif;
+            font-weight: bold;
+            color: lightpink;
+            text-align: left;
+            margin-top: 3rem;
+            margin-right: 2rem;
+        }
+        #register-button {
+            margin-top: 1%;
+        }
+        .fieldError {
+            color: red;
+        }
+        .form-group {
+            margin: 0;
+            margin-top: 2%;
+            width: 30%;
+        }
+        .form-control {
+            background-color: lightpink;
+            border: azure;
+        }
+        .form-control::placeholder {
+            color: antiquewhite;
+            font-weight: bold;
+            font-family: 'Lora', serif;
+        }
+        body {
+            overflow: hidden;
+            background-image: url("/images/main.png");
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${duplicateMemberError}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+    </script>
+</th:block>
+
+<div layout:fragment="content">
+    <form id="registerForm" action="/member/new" role="form" method="post"  th:object="${memberFormDto}">
+        <div class="form-group">
+            <label th:for="name">Nickname</label>
+            <input type="text" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력해주세요.">
+            <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="account">Id</label>
+            <input type="text" th:field="*{account}" class="form-control" placeholder="아이디를 입력해주세요">
+            <p th:if="${#fields.hasErrors('account')}" th:errors="*{account}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="password">Password</label>
+            <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력해주세요.">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
+        </div>
+        <div id="register-button" style="text-align: center">
+            <button type="submit" class="btn btn-primary" style="">Register</button>
+        </div>
+    </form>
+</div>
+
+</html>
