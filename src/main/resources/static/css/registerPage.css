@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+#registerForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Lora', serif;
+    font-weight: bold;
+    color: lightpink;
+    text-align: left;
+    margin-top: 3rem;
+    margin-right: 2rem;
+}
+#register-button-section {
+    margin-top: 5px;
+}
+#register-button {
+    padding: 10px;
+    background-color: lightpink;
+    border: 2px solid white;
+    border-radius: 1rem;
+    font-family: 'Lora', serif;
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+}
+.input-error {
+    visibility: hidden;
+    color: whitesmoke;
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    background-color: palevioletred;
+    border-color: lightpink;
+    border-radius: 10px;
+}
+.fieldError {
+    color: red;
+}
+.form-group {
+    margin: 0;
+    margin-top: 5px;
+    width: 30%;
+}
+.form-control {
+    background-color: lightpink;
+    border: azure;
+    color: white;
+}
+.form-control::placeholder {
+    color: white;
+    font-weight: bold;
+    font-family: 'Lora', serif;
+}
+
+body {
+    overflow: hidden;
+    background-image: url("../images/main.png");
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

@@ -31,16 +31,16 @@ public class MemberController {
         return "registerPage";
     }
 
-    @PostMapping("/new")
+    @PostMapping("/register")
     public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "member/memberForm";
+            return "registerPage";
         }
         try {
             Member member = memberService.saveMember(memberFormDto);
         } catch (IllegalArgumentException e) {
             model.addAttribute("duplicateMemberError", e.getMessage());
-            return "member/memberForm";
+            return "registerPage";
         }
         return "redirect:/";
     }
