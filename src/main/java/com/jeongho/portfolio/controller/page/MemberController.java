@@ -30,7 +30,6 @@ public class MemberController {
         model.addAttribute("memberFormDto", new MemberFormDto());
         return "registerPage";
     }
-
     @PostMapping("/register")
     public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
