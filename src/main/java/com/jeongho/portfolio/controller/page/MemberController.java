@@ -83,4 +83,6 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("logoutCompleteMsg", "로그아웃을 완료하였습니다.");
         return "redirect:/";
     }
+
+
 }
