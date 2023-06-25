@@ -25,6 +25,7 @@ public class MemberController {
 
     final private MemberService memberService;
 
+
     @GetMapping("/register")
     public String memberForm(Model model) {
         model.addAttribute("memberFormDto", new MemberFormDto());
