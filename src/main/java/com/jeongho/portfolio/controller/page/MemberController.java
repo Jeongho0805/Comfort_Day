@@ -23,8 +23,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-
-
     final private MemberService memberService;
 
 
