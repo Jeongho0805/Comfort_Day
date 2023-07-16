@@ -23,7 +23,9 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
+
     final private MemberService memberService;
+
 
     @GetMapping("/register")
     public String memberForm(Model model) {
